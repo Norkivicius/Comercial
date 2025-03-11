@@ -1,0 +1,42 @@
+object frmItens: TfrmItens
+  Left = 0
+  Top = 0
+  Caption = 'Itens'
+  ClientHeight = 119
+  ClientWidth = 317
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object SpeedButton1: TSpeedButton
+    Left = 8
+    Top = 66
+    Width = 68
+    Height = 26
+  end
+  object edtQuantidade: TLabeledEdit
+    Left = 8
+    Top = 30
+    Width = 121
+    Height = 21
+    EditLabel.Width = 56
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Quantidade'
+    TabOrder = 0
+  end
+  object edtPreco: TLabeledEdit
+    Left = 169
+    Top = 30
+    Width = 121
+    Height = 21
+    EditLabel.Width = 27
+    EditLabel.Height = 13
+    EditLabel.Caption = 'Pre'#231'o'
+    TabOrder = 1
+  end
+end

@@ -1,0 +1,18 @@
+program Venda;
+
+uses
+  Vcl.Forms,
+  uFrmVendas in 'uFrmVendas.pas' {FrmVendas},
+  ufrmItens in 'ufrmItens.pas' {frmItens},
+  uDM in '..\ClientWin32\Modules\uDM.pas' {DM: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmVendas, FrmVendas);
+  Application.CreateForm(TfrmItens, frmItens);
+  Application.CreateForm(TDM, DM);
+  Application.Run;
+end.

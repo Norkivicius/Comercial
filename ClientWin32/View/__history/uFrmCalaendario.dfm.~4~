@@ -1,0 +1,25 @@
+object frmCalendario: TfrmCalendario
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Calendario'
+  ClientHeight = 338
+  ClientWidth = 651
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object MonthCalendar1: TMonthCalendar
+    Left = 230
+    Top = 92
+    Width = 191
+    Height = 154
+    Date = 45608.491832384260000000
+    TabOrder = 0
+  end
+end

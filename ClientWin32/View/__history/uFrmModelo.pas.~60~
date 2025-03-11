@@ -1,0 +1,200 @@
+unit uFrmModelo;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ToolWin, Vcl.ComCtrls, Vcl.ActnList,
+  Vcl.Menus, Vcl.ImgList, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Buttons, Data.DB, DBClient;
+
+type
+  TfrmModelo = class(TForm)
+    ImageList1: TImageList;
+    MainMenu1: TMainMenu;
+    ActionList1: TActionList;
+    ac_Incluir: TAction;
+    ac_Excluir: TAction;
+    ac_Alterar: TAction;
+    ac_Visualizar: TAction;
+    ac_Imprimir: TAction;
+    ac_Salvar: TAction;
+    ac_Cancelar: TAction;
+    ToolBar1: TToolBar;
+    Manuteno1: TMenuItem;
+    Incluir1: TMenuItem;
+    Action21: TMenuItem;
+    Action31: TMenuItem;
+    Action41: TMenuItem;
+    Action51: TMenuItem;
+    N1: TMenuItem;
+    ac_Fechar: TAction;
+    Action71: TMenuItem;
+    PageControl1: TPageControl;
+    tbCadastro: TTabSheet;
+    tbConsulta: TTabSheet;
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    cbxField: TComboBox;
+    edtValor: TEdit;
+    btnPesquisar: TBitBtn;
+    Label1: TLabel;
+    Label2: TLabel;
+    lblDesabilitaFiltro: TLabel;
+    dsDados: TDataSource;
+    ToolButton1: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton9: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton8: TToolButton;
+    lblProximoPacote: TLabel;
+    procedure ac_IncluirExecute(Sender: TObject);
+    procedure ac_ExcluirExecute(Sender: TObject);
+    procedure ac_AlterarExecute(Sender: TObject);
+    procedure ac_VisualizarExecute(Sender: TObject);
+    procedure ac_SalvarExecute(Sender: TObject);
+    procedure ac_CancelarExecute(Sender: TObject);
+    procedure ac_FecharExecute(Sender: TObject);
+    procedure ac_IncluirUpdate(Sender: TObject);
+    procedure ac_SalvarUpdate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure lblDesabilitaFiltroClick(Sender: TObject);
+    procedure lblProximoPacoteClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    ListaFields : array of Integer;
+    Pacote: Integer;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmModelo: TfrmModelo;
+
+implementation
+
+uses
+  uFrmPrincipal, uDM, uUsuario;
+
+{$R *.dfm}
+
+procedure TfrmModelo.ac_AlterarExecute(Sender: TObject);
+begin
+  if dsDados.DataSet.Active then
+  begin
+    PageControl1.ActivePage := tbCadastro;
+    dsDados.DataSet.Edit;
+  end;
+end;
+
+procedure TfrmModelo.ac_CancelarExecute(Sender: TObject);
+begin
+  TClientDataSet(dsDados.DataSet).CancelUpdates;
+  PageControl1.ActivePage := tbConsulta;
+end;
+
+procedure TfrmModelo.ac_ExcluirExecute(Sender: TObject);
+begin
+  if dsDados.DataSet.IsEmpty then
+  begin
+    dsDados.DataSet.Delete;
+    if dsDados.DataSet is TClientDataset then
+      TClientDataSet(dsDados.DataSet).ApplyUpdates(0);
+  end;
+end;
+
+procedure TfrmModelo.ac_FecharExecute(Sender: TObject);
+begin
+  Close;
+end;
+procedure TfrmModelo.ac_IncluirExecute(Sender: TObject);
+begin
+  PageControl1.ActivePage := tbCadastro;
+  if not dsDados.DataSet.Active then
+    dsDados.DataSet.Open;
+  dsDados.DataSet.Insert;
+end;
+procedure TfrmModelo.ac_IncluirUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := dsDados.State in [dsInactive, dsBrowse];
+end;
+
+procedure TfrmModelo.ac_SalvarExecute(Sender: TObject);
+begin
+  TClientDataSet(dsDados.DataSet).ApplyUpdates(0);
+  PageControl1.ActivePage := tbConsulta;
+end;
+
+procedure TfrmModelo.ac_SalvarUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := dsDados.State in [dsInsert, dsEdit];
+  lblDesabilitaFiltro.Visible :=  dsDados.DataSet.Filtered;
+  lblProximoPacote.Visible    := Pacote > 0;
+end;
+
+procedure TfrmModelo.ac_VisualizarExecute(Sender: TObject);
+begin
+  if PageControl1.ActivePage = tbConsulta then
+    PageControl1.ActivePage := tbCadastro
+  else
+    PageControl1.ActivePage := tbConsulta
+end;
+
+procedure TfrmModelo.btnPesquisarClick(Sender: TObject);
+begin
+  if (cbxField.Text <> EmptyStr) and (edtValor.Text <> EmptyStr) then
+  begin
+    dsDados.DataSet.Filter := 'UPPER (' + dsDados.DataSet.Fields[Listafields[cbxField.ItemIndex]].FieldName + ')like ' + QuotedStr(UpperCase(edtValor.Text) + '%');
+    dsDados.DataSet.Filtered := True;
+    if not dsDados.DataSet.Active then
+      dsDados.DataSet.Open;
+  end;
+end;
+
+procedure TfrmModelo.FormCreate(Sender: TObject);
+var
+  I, J: Integer;
+begin
+  for I := 0 to Pred(dsDados.DataSet.FieldCount) do
+  begin
+    if dsDados.DataSet.Fields[I].DataType in [ftString,ftWideString,ftFixedChar] then
+    begin
+      J := cbxField.Items.Add(dsDados.DataSet.Fields[I].DisplayLabel);
+      SetLength(ListaFields,High(ListaFields)+2);
+      ListaFields[J] := I;
+    end;
+  end;
+  dsDados.DataSet.Open;
+  Pacote := 1;
+end;
+procedure TfrmModelo.FormShow(Sender: TObject);
+var
+  Temp: Tpermissao;
+begin
+  inherited;
+  Temp:= TUsuario.GetInstance.GetPermissao(Caption);
+  ToolButton1.Visible := Temp.Incluir;
+  ToolButton2.Visible := Temp.Excluir;
+  ToolButton3.Visible := Temp.Alterar;
+  ToolButton4.Visible := Temp.Consultar;
+  ToolButton5.Visible := Temp.Imprimir;
+end;
+
+procedure TfrmModelo.lblProximoPacoteClick(Sender: TObject);
+begin
+  Pacote :=  TClientDataSet(dsDados.DataSet).GetNextPacket;
+end;
+
+procedure TfrmModelo.lblDesabilitaFiltroClick(Sender: TObject);
+begin
+  dsDados.DataSet.Filtered := False;
+end;
+
+end.

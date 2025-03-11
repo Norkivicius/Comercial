@@ -1,0 +1,229 @@
+unit uFrmModelo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ActnList, ImgList, ToolWin, ComCtrls, Menus, StdCtrls, Buttons,
+  Grids, DBGrids, ExtCtrls, DB;
+
+type
+  TFrmModelo = class(TForm)
+    MainMenu1: TMainMenu;
+    ToolBar1: TToolBar;
+    ActionList1: TActionList;
+    ImageList1: TImageList;
+    Ac_Incluir: TAction;
+    Ac_Excluir: TAction;
+    Ac_Alterar: TAction;
+    Ac_Visualizar: TAction;
+    Ac_Imprimir: TAction;
+    Ac_Salvar: TAction;
+    Ac_Cancelar: TAction;
+    Ac_Fechar: TAction;
+    Manuteno1: TMenuItem;
+    Incluir1: TMenuItem;
+    Incluir2: TMenuItem;
+    Action31: TMenuItem;
+    Action41: TMenuItem;
+    Action51: TMenuItem;
+    N1: TMenuItem;
+    Incluir3: TMenuItem;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    ToolButton10: TToolButton;
+    PageControl1: TPageControl;
+    tbCadastro: TTabSheet;
+    tbConsulta: TTabSheet;
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    cbxField: TComboBox;
+    EdtValor: TEdit;
+    BtnPesquisar: TBitBtn;
+    Salvar1: TMenuItem;
+    Cancelar1: TMenuItem;
+    N2: TMenuItem;
+    Label1: TLabel;
+    Label2: TLabel;
+    Ds: TDataSource;
+    Label3: TLabel;
+    lblPacote: TLabel;
+    procedure Ac_IncluirExecute(Sender: TObject);
+    procedure Ac_ExcluirExecute(Sender: TObject);
+    procedure Ac_AlterarExecute(Sender: TObject);
+    procedure Ac_VisualizarExecute(Sender: TObject);
+    procedure Ac_ImprimirExecute(Sender: TObject);
+    procedure Ac_SalvarExecute(Sender: TObject);
+    procedure Ac_CancelarExecute(Sender: TObject);
+    procedure Ac_FecharExecute(Sender: TObject);
+    procedure Ac_IncluirUpdate(Sender: TObject);
+    procedure Ac_SalvarUpdate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure BtnPesquisarClick(Sender: TObject);
+    procedure Label3Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure lblPacoteClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+    ListaField: Array of Integer;
+    Pacotes: Integer;
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmModelo: TFrmModelo;
+
+implementation
+
+uses
+  DBClient, uUsuario;
+
+{$R *.dfm}
+
+procedure TFrmModelo.Ac_AlterarExecute(Sender: TObject);
+begin
+  if Ds.DataSet.Active and not Ds.DataSet.IsEmpty then
+  begin
+    PageControl1.ActivePage := tbCadastro;
+    Ds.DataSet.Edit;
+  end;
+end;
+
+procedure TFrmModelo.Ac_CancelarExecute(Sender: TObject);
+begin
+  TClientDataSet(Ds.DataSet).CancelUpdates;
+  PageControl1.ActivePage := tbConsulta;
+end;
+
+procedure TFrmModelo.Ac_ExcluirExecute(Sender: TObject);
+begin
+  if not Ds.DataSet.IsEmpty then
+  begin
+  Ds.DataSet.Delete;
+  if Ds.DataSet is TClientDataSet then
+    TClientDataSet(Ds.DataSet).ApplyUpdates(0);
+  end;
+end;
+
+procedure TFrmModelo.Ac_FecharExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmModelo.Ac_ImprimirExecute(Sender: TObject);
+begin
+  ShowMessage('Implementação Futura');
+end;
+
+procedure TFrmModelo.Ac_IncluirExecute(Sender: TObject);
+begin
+  PageControl1.ActivePage := tbCadastro;
+  if not Ds.DataSet.Active then
+  begin
+    Ds.DataSet.Open;
+  end
+  else
+    Ds.Dataset.Filtered := False;
+  Ds.DataSet.Insert;
+end;
+
+procedure TFrmModelo.Ac_IncluirUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := Ds.DataSet.State in [dsInactive,dsBrowse];
+end;
+
+procedure TFrmModelo.Ac_SalvarExecute(Sender: TObject);
+begin
+  TClientDataSet(Ds.DataSet).ApplyUpdates(0);
+  PageControl1.ActivePage := tbConsulta;
+end;
+
+procedure TFrmModelo.Ac_SalvarUpdate(Sender: TObject);
+begin
+  TAction(Sender).Enabled := Ds.DataSet.State in [dsInsert,dsEdit];
+  Label3.Visible := Ds.DataSet.Filtered;
+  lblPacote.Visible := Pacotes > 0;
+end;
+
+procedure TFrmModelo.Ac_VisualizarExecute(Sender: TObject);
+begin
+  if PageControl1.ActivePage = tbConsulta then
+    PageControl1.ActivePage := tbCadastro
+  else
+    PageControl1.ActivePage := tbConsulta;
+
+end;
+
+procedure TFrmModelo.BtnPesquisarClick(Sender: TObject);
+begin
+  if (cbxField.Text <> EmptyStr) and
+       (EdtValor.Text <> EmptyStr) then
+  begin
+    Ds.DataSet.Filter   := 'Upper('+ Ds.DataSet.Fields[ListaField[cbxField.ItemIndex]].FieldName +') like '+QuotedStr(UpperCase(EdtValor.Text)+'%');
+    Ds.DataSet.Filtered := True;
+    if not Ds.DataSet.Active then
+      Ds.DataSet.Open;
+  end;
+end;
+
+procedure TFrmModelo.DBGrid1DblClick(Sender: TObject);
+begin
+  Ac_Visualizar.Execute;
+end;
+
+procedure TFrmModelo.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Ds.DataSet.Close;
+end;
+
+procedure TFrmModelo.FormCreate(Sender: TObject);
+var
+  I, J: Integer;
+begin
+  for I := 0 to Pred(Ds.DataSet.FieldCount) do
+  begin
+    if Ds.DataSet.Fields[I].DataType in [ftString,ftWideString,ftFixedChar] then
+    begin
+      J := cbxField.Items.Add(Ds.DataSet.Fields[I].DisplayLabel);
+      SetLength(ListaField,High(ListaField)+2);
+      ListaField[J] := I;
+    end;
+  end;
+  Ds.DataSet.Close;
+  Pacotes := 1;
+  PageControl1.ActivePage := tbConsulta;
+end;
+
+procedure TFrmModelo.FormShow(Sender: TObject);
+var
+  Temp: TPermissao;
+begin
+  Temp := TUsuario.GetInstance.GetPermissao(Caption);
+  ToolButton1.Visible := Temp.Incluir;
+  ToolButton2.Visible := Temp.Excluir;
+  ToolButton3.Visible := Temp.Alterar;
+  ToolButton4.Visible := Temp.Consultar;
+  ToolButton5.Visible := Temp.Imprimir;
+end;
+
+procedure TFrmModelo.Label3Click(Sender: TObject);
+begin
+  Ds.DataSet.Filtered := False;
+end;
+
+procedure TFrmModelo.lblPacoteClick(Sender: TObject);
+begin
+  Pacotes := TClientDataSet(Ds.DataSet).GetNextPacket;
+end;
+
+end.

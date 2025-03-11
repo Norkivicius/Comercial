@@ -1,0 +1,18 @@
+program Venda;
+
+uses
+  Vcl.Forms,
+  uFrmVendas in 'uFrmVendas.pas' {FrmVendas},
+  ufrmItens in 'ufrmItens.pas' {FrmItens},
+  uFrmFinalizaVenda in 'uFrmFinalizaVenda.pas' {frmFinalizaVenda};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmVendas, FrmVendas);
+  Application.CreateForm(TFrmItens, FrmItens);
+  Application.CreateForm(TfrmFinalizaVenda, frmFinalizaVenda);
+  Application.Run;
+end.

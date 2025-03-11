@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/11/13 16:23:58.000.833,=rtl.dcp</Transaction>
+    <Transaction>2024/11/13 16:25:52.000.108,=rtl.dcp</Transaction>
+    <Transaction>2024/11/13 16:27:04.000.043,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\Vendas.dproj=C:\Users\Rafael Cefaloni\Documents\RAD Studio\Projects\Package1.dproj</Transaction>
+    <Transaction>2024/11/13 16:29:22.000.821,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\uFrmVendas.pas</Transaction>
+    <Transaction>2024/11/13 16:29:48.000.747,=dbrtl.dcp</Transaction>
+    <Transaction>2024/11/13 16:29:48.000.778,=vcldb.dcp</Transaction>
+    <Transaction>2024/11/13 16:29:48.000.713,=vcl.dcp</Transaction>
+    <Transaction>2024/11/25 17:24:16.000.309,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\Unit1.pas</Transaction>
+    <Transaction>2024/11/25 17:25:09.000.066,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\Unit1.pas=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\ufrmItens.pas</Transaction>
+    <Transaction>2024/11/25 17:25:09.000.066,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\Unit1.dfm=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\ufrmItens.dfm</Transaction>
+    <Transaction>2024/11/25 17:25:57.000.247,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Core\ufrmItens.pas=</Transaction>
+    <Transaction>2024/11/25 17:56:56.000.131,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\ufrmItens.pas</Transaction>
+    <Transaction>2024/11/26 11:56:59.000.493,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\uFrmFinalizaVenda.pas</Transaction>
+  </Transactions>
+</BorlandProject>

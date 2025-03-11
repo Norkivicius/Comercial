@@ -1,0 +1,159 @@
+unit uFrmVendas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, ExtCtrls, StdCtrls, Buttons, GIFImg, DB, DBClient,
+  DBCtrls;
+
+type
+  TFrmVendas = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DBGrid1: TDBGrid;
+    EdtCodigo: TLabeledEdit;
+    EdtDescricao: TLabeledEdit;
+    EdtCategoria: TLabeledEdit;
+    EdtFabricante: TLabeledEdit;
+    BtnBuscar: TBitBtn;
+    Image1: TImage;
+    DBGrid2: TDBGrid;
+    Label1: TLabel;
+    Label2: TLabel;
+    BtnLimpar: TBitBtn;
+    BtnFinalizar: TBitBtn;
+    BtnFechar: TBitBtn;
+    cdsConsultaProduto: TClientDataSet;
+    DsConsultaProduto: TDataSource;
+    cdsConsultaProdutoCODIGO: TIntegerField;
+    cdsConsultaProdutoDESCRICAO: TStringField;
+    cdsConsultaProdutoESTOQUE: TFloatField;
+    cdsConsultaProdutoPRECO: TFloatField;
+    cdsConsultaProdutoFABRICANTE: TStringField;
+    cdsConsultaProdutoCATEGORIA: TStringField;
+    CdsItens: TClientDataSet;
+    DsItens: TDataSource;
+    CdsItensCodigo: TIntegerField;
+    CdsItensDescricao: TStringField;
+    CdsItensQuantidade: TFloatField;
+    CdsItensPreco: TFloatField;
+    CdsItensTotalItens: TAggregateField;
+    CdsItensSubTotal: TAggregateField;
+    CdsItensValorTotal: TFloatField;
+    DBText1: TDBText;
+    DBText2: TDBText;
+    procedure BtnFecharClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure BtnBuscarClick(Sender: TObject);
+    procedure CdsItensCalcFields(DataSet: TDataSet);
+    procedure FormCreate(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure BtnFinalizarClick(Sender: TObject);
+    procedure BtnLimparClick(Sender: TObject);
+  private
+
+  protected
+    procedure ConsultaProduto;Virtual;
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmVendas: TFrmVendas;
+
+implementation
+
+uses
+  UFrmFinalizaVenda, uFrmItem;
+
+{$R *.dfm}
+
+procedure TFrmVendas.BtnBuscarClick(Sender: TObject);
+begin
+  ConsultaProduto;
+end;
+
+procedure TFrmVendas.BtnFecharClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFrmVendas.BtnFinalizarClick(Sender: TObject);
+begin
+  FrmFinalizaVenda := TFrmFinalizaVenda.Create(Self);
+  FrmFinalizaVenda.ShowModal;
+  FreeAndNil(FrmFinalizaVenda);
+end;
+
+procedure TFrmVendas.BtnLimparClick(Sender: TObject);
+begin
+  if MessageDlg('Deseja Limpar os Items ?',mtConfirmation,[mbYes,mbNo],0) = mrYes then
+    CdsItens.EmptyDataSet;
+end;
+
+procedure TFrmVendas.CdsItensCalcFields(DataSet: TDataSet);
+begin
+  CdsItensValorTotal.Value := CdsItensQuantidade.Value *
+                                 CdsItensPreco.Value;
+end;
+
+procedure TFrmVendas.ConsultaProduto;
+var
+  S: TStringList;
+begin
+  S := TStringList.Create;
+  S.Add('Select  P.Produtoid Codigo, P.Descricao, P.Estoque, P.Preco, ');
+  S.Add('        F.Descricao Fabricante, C.Descricao Categoria        ');
+  S.Add('  From Categoria C, Fabricante F, Produtos P                 ');
+  S.Add(' Where P.Categoria  = C.Categoriaid                          ');
+  S.Add('   and P.Fabricante = F.Fabricanteid                         ');
+  if EdtCodigo.Text <> EmptyStr then
+    S.Add(' and P.ProdutoID = '+EdtCodigo.Text                         );
+  if EdtDescricao.Text <> EmptyStr then
+    S.Add(' and P.Descricao Like '+QuotedStr(EdtDescricao.Text+'%')    );
+  if EdtFabricante.Text <> EmptyStr then
+    S.Add(' and F.Descricao Like '+QuotedStr(EdtFabricante.Text+'%')   );
+  if EdtCategoria.Text <> EmptyStr then
+    S.Add(' and C.Descricao Like '+QuotedStr(EdtCategoria.Text+'%')    );
+
+  cdsConsultaProduto.Close;
+  cdsConsultaProduto.CommandText := S.Text;
+  cdsConsultaProduto.Open;
+
+  FreeAndNil(S);
+end;
+
+procedure TFrmVendas.DBGrid1DblClick(Sender: TObject);
+begin
+  FrmItem.EdtQtde.Text  := '1';
+  FrmItem.EdtPreco.Text := cdsConsultaProdutoPRECO.AsString;
+  if FrmItem.ShowModal = mrOk then
+  begin
+    CdsItens.Append;
+    CdsItensCodigo.Value        := cdsConsultaProdutoCODIGO.Value;
+    CdsItensDescricao.Value     := cdsConsultaProdutoDESCRICAO.Value;
+    CdsItensQuantidade.AsString := FrmItem.EdtQtde.Text;
+    CdsItensPreco.AsString      := FrmItem.EdtPreco.Text;
+    CdsItens.Post;
+  end;
+end;
+
+procedure TFrmVendas.FormCreate(Sender: TObject);
+begin
+  FrmItem := TFrmItem.Create(Self);
+end;
+
+procedure TFrmVendas.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+   VK_F6: Close;
+   vk_F2: ConsultaProduto;
+   VK_RETURN: DBGrid1.OnDblClick(Sender);
+  end;
+end;
+
+initialization
+  RegisterClass(TFrmVendas);
+end.

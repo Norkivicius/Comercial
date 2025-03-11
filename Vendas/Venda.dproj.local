@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/08/25 12:25:04.000.385,=C:\Users\Rafael Cefaloni\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/11/13 15:24:51.000.702,=C:\Users\Rafael Cefaloni\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/11/13 15:25:30.000.764,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\uFrmVendas.dfm=C:\Users\Rafael Cefaloni\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2024/11/13 15:25:30.000.764,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\uFrmVendas.pas=C:\Users\Rafael Cefaloni\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/11/13 15:25:33.000.981,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Vendas.dproj=C:\Users\Rafael Cefaloni\Documents\RAD Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2024/11/13 16:26:47.000.258,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Venda.dproj=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Vendas.dproj</Transaction>
+    <Transaction>2024/11/25 17:26:52.000.785,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\ufrmItens.pas</Transaction>
+    <Transaction>2024/11/25 17:44:16.000.304,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\ClientWin32\Modules\uDM.pas</Transaction>
+    <Transaction>2024/11/26 10:51:09.000.072,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Unit1.pas</Transaction>
+    <Transaction>2024/11/26 10:51:24.000.726,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\uFrmFinalizaVenda.pas=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Unit1.pas</Transaction>
+    <Transaction>2024/11/26 10:51:24.000.726,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\uFrmFinalizaVenda.dfm=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\Vendas\Unit1.dfm</Transaction>
+    <Transaction>2024/11/26 13:39:35.000.463,C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\ClientWin32\Modules\uDM.pas=</Transaction>
+    <Transaction>2024/11/26 13:53:48.000.526,=C:\Users\Rafael Cefaloni\Desktop\Arquivos Delphi\Comercial\ClientWin32\Modules\uDM.pas</Transaction>
+  </Transactions>
+</BorlandProject>

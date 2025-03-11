@@ -1,0 +1,145 @@
+inherited FrmUsuario: TFrmUsuario
+  Caption = 'Cadastro de Usu'#225'rio'
+  ClientWidth = 665
+  ExplicitWidth = 673
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 665
+    ExplicitWidth = 665
+  end
+  inherited PageControl1: TPageControl
+    Width = 665
+    ActivePage = tbCadastro
+    ExplicitWidth = 665
+    inherited tbCadastro: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 6
+      ExplicitWidth = 657
+      ExplicitHeight = 484
+      object Label3: TLabel
+        Left = 3
+        Top = 13
+        Width = 29
+        Height = 13
+        Caption = 'NOME'
+      end
+      object Label4: TLabel
+        Left = 3
+        Top = 53
+        Width = 30
+        Height = 13
+        Caption = 'EMAIL'
+      end
+      object Label5: TLabel
+        Left = 3
+        Top = 93
+        Width = 31
+        Height = 13
+        Caption = 'LOGIN'
+      end
+      object Label6: TLabel
+        Left = 3
+        Top = 133
+        Width = 33
+        Height = 13
+        Caption = 'SENHA'
+      end
+      object Label7: TLabel
+        Left = 3
+        Top = 173
+        Width = 54
+        Height = 13
+        Caption = 'VENDEDOR'
+      end
+      object Label8: TLabel
+        Left = 130
+        Top = 133
+        Width = 34
+        Height = 13
+        Caption = 'PERFIL'
+      end
+      object DBEdit1: TDBEdit
+        Left = 3
+        Top = 26
+        Width = 300
+        Height = 21
+        DataField = 'NOME'
+        DataSource = dsDados
+        TabOrder = 0
+      end
+      object DBEdit2: TDBEdit
+        Left = 3
+        Top = 68
+        Width = 350
+        Height = 21
+        DataField = 'EMAIL'
+        DataSource = dsDados
+        TabOrder = 1
+      end
+      object DBEdit3: TDBEdit
+        Left = 3
+        Top = 107
+        Width = 121
+        Height = 21
+        DataField = 'LOGIN'
+        DataSource = dsDados
+        TabOrder = 2
+      end
+      object DBEdit4: TDBEdit
+        Left = 3
+        Top = 147
+        Width = 121
+        Height = 21
+        DataField = 'SENHA'
+        DataSource = dsDados
+        TabOrder = 3
+      end
+      object DBCheckBox1: TDBCheckBox
+        Left = 3
+        Top = 189
+        Width = 97
+        Height = 17
+        Caption = 'DBCheckBox1'
+        DataField = 'VENDEDOR'
+        DataSource = dsDados
+        TabOrder = 4
+        ValueChecked = 'S'
+        ValueUnchecked = 'N'
+      end
+      object DBLookupComboBox1: TDBLookupComboBox
+        Left = 130
+        Top = 147
+        Width = 300
+        Height = 21
+        TabOrder = 5
+      end
+    end
+    inherited tbConsulta: TTabSheet
+      ExplicitWidth = 657
+      inherited Panel1: TPanel
+        Width = 657
+        ExplicitWidth = 657
+      end
+      inherited DBGrid1: TDBGrid
+        Width = 657
+      end
+    end
+  end
+  inherited ImageList1: TImageList
+    Left = 568
+    Top = 90
+  end
+  inherited MainMenu1: TMainMenu
+    Left = 568
+    Top = 189
+  end
+  inherited ActionList1: TActionList
+    Left = 583
+    Top = 279
+  end
+  inherited dsDados: TDataSource
+    Left = 478
+    Top = 1
+  end
+end

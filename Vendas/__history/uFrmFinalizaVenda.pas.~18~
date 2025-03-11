@@ -1,0 +1,105 @@
+unit uFrmFinalizaVenda;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.Grids,
+  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.DBCtrls, Data.DB, Datasnap.DBClient, uDM;
+
+type
+  TfrmFinalizaVenda = class(TForm)
+    Label2: TLabel;
+    DBText2: TDBText;
+    edtNome: TLabeledEdit;
+    DBGrid1: TDBGrid;
+    edtSenha: TLabeledEdit;
+    BitBtn1: TBitBtn;
+    cdsFinalizaVenda: TClientDataSet;
+    dsFinalizaVenda: TDataSource;
+    cdsFinalizaVendaCLIENTEID: TIntegerField;
+    procedure edtNomeChange(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFinalizaVenda: TfrmFinalizaVenda;
+
+implementation
+
+uses
+  uFrmVendas, dbxcommon;
+
+{$R *.dfm}
+
+procedure TfrmFinalizaVenda.BitBtn1Click(Sender: TObject);
+var
+  DbCon: TDBXConnection;
+  Command: TDBXCommand;
+  Reader : TDBXReader;
+  IdUse  : Integer;
+begin
+  if edtSenha.Text = EmptyStr then
+  begin
+    ShowMessage('Informe a senha do vendedor');
+    edtSenha.SetFocus;
+    Exit;
+  end;
+  DbCon := TDBXConnectionFactory.GetConnectionFactory.GetConnection('DBVENDAS','SYSDBA','masterkey');
+  Command := DbCon.CreateCommand;
+  Command.Text := Format('SELECT VENDEDOR, USUARIOID FROM USUARIOS WHERE SENHA = %s ',[QuotedStr(edtSenha.Text)]);
+  Reader := Command.ExecuteQuery;
+
+  if Reader.Next then
+    if not (Reader.Value[0].GetAnsiString = 'S') then
+    begin
+      MessageDlg('A senha informada não é de um vendedor !!',mtWarning,[mbOK],0);
+      edtSenha.SetFocus;
+      Exit;
+    end
+    else
+      IdUse := Reader.Value[1].GetInt32
+  else
+    MessageDlg('Senha informada inválida!!',mtWarning,[mbOK],0);
+
+  if cdsFinalizaVenda.IsEmpty then
+  begin
+    MessageDlg('Você precisa selecionar um cliente!!',mtWarning,[mbOK],0);
+    edtNome.SetFocus;
+  end;
+
+  with DM do
+  begin
+    cdsVendas.Append;
+    cdsVendasCLIENTEID.Value := cdsFinalizaVendaCLIENTEID.Value;
+    cdsVendasUSUARIOID.Value :=
+  end;
+
+end;
+
+procedure TfrmFinalizaVenda.edtNomeChange(Sender: TObject);
+var
+  S :TStringList;
+begin
+  try
+    S:= TStringList.Create;
+    if edtNome.Text <> EmptyStr then
+    begin
+      cdsFinalizaVenda.Close;
+      S.Add(' SELECT C.CLIENTEID, C.NOME, C.ENDERECO, C.BAIRRO, C.TELEFONE ');
+      S.Add(' FROM CLIENTES C ');
+      S.Add(' WHERE C.NOME LIKE' + QuotedStr(edtNome.Text + '%'));
+      cdsFinalizaVenda.CommandText := S.Text;
+      cdsFinalizaVenda.Open;
+    end;
+  finally
+    FreeAndNil(S);
+  end;
+
+end;
+
+end.
